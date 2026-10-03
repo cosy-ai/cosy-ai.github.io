@@ -13,6 +13,8 @@ const plain = new Map(); // Pfad → Promise<ArrayBuffer>, solange der Worker le
 
 self.addEventListener("install", () => self.skipWaiting());
 self.addEventListener("activate", (e) => e.waitUntil(self.clients.claim()));
+// Die Login-Seite fordert das nach einem harten Reload an, damit der Worker sie übernimmt.
+self.addEventListener("message", (e) => { if (e.data === "claim") e.waitUntil(self.clients.claim()); });
 
 self.addEventListener("fetch", (e) => {
   const req = e.request;
